@@ -39,22 +39,14 @@ app.get('/',  async (req, res) => {
                 const posts = await Post.find().populate('user', 'username');
          res.render('index', { token: req.cookies.token , posts}); 
         }
-            req.user = decoded;
-            console.log(decoded);
+            req.user = decoded; 
             const post = await Post.find().populate('user', 'username');
-           console.log(post);
+        //    console.log(post);
             const posts = post.filter(p => p.user._id.toString() !== decoded.user_id );
-            
-
-            console.log(posts);
-            
+            // console.log(posts);
             res.render('index', { token: req.cookies.token , posts});
         });
-
     }
-
-
-
 });
 
 app.get('/register', (req, res) => {
@@ -66,7 +58,7 @@ app.post('/register', async (req, res) => {
     const { username, name, email, age, password } = req.body;
     try {
         const user = await User.findOne({ email: email });
-        console.log(user);
+        // console.log(user);
         if (user) { return res.status(400).send("Email already exists"); }
 
 
@@ -96,11 +88,6 @@ app.post('/register', async (req, res) => {
 
             });
         });
-
-
-
-
-
     }
     catch (err) {
         console.error("Error during user registration:", err);
@@ -143,10 +130,10 @@ app.get('/logout', (req, res) => {
 app.get('/profile', isAuthenticated, async (res, req) => {
 
     const user = await User.findOne({ email: res.user.email });
-    console.log("a  " + user);
+    // console.log("a  " + user);
     
     const posts = await Post.find({user : user._id})
-    console.log(posts);
+    // console.log(posts);
     
     req.render('profile', { user, posts })
 })
@@ -167,8 +154,8 @@ app.post('/create-post',isAuthenticated, async (res, req) => {
     })
    
     // Update the user document to include the new post
-    console.log(posts);
-    console.log(user);
+    // console.log(posts);
+    // console.log(user);
     user.posts.push(posts._id);
     await user.save();
     req.redirect('/profile');
@@ -182,7 +169,7 @@ catch(e){
 
 app.post('/delete-post', isAuthenticated, async (res, req) => {
       const postid = res.body.id;
-      console.log(postid);
+    //   console.log(postid);
    try{
 
        const deleted = await Post.findByIdAndDelete(postid);
