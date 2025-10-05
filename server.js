@@ -205,7 +205,7 @@ app.post('/delete-post', isAuthenticated, async (res, req) => {
 function isAuthenticated(req, res, next) {
 
     const token = req.cookies.token;
-    if (!token) { return res.status(401).send("Unauthorized"); }
+    if (!token) { res.redirect('login') }
 
     else {
         jwt.verify(token, 'secret', (err, decoded) => {
