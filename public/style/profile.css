@@ -1,0 +1,218 @@
+* {
+    box-sizing: border-box;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background: var(--bg);
+    color: #0b2a12;
+}
+
+.wrap {
+    min-height: 100vh;
+    margin-top: 7rem;
+    padding: 18px;
+    gap: 24px;
+}
+
+/* post-style.css
+   Modern, lightweight styles for the Create Post page
+   Place this file in your public CSS folder (e.g. /public/css/post-style.css)
+*/
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --muted:#7b8794;
+  --accent:#62d14f; /* indigo */
+  --accent-2:#62d14f; /* teal */
+  --shadow: 0 6px 18px rgba(17,24,39,0.06);
+  --radius:12px;
+  --max-width:1100px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:32px 16px;
+  display:flex;
+  justify-content:center;
+}
+
+.wrap{
+  width:100%;
+  max-width:var(--max-width);
+  display:grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap:24px;
+  align-items:start;
+}
+
+/* post-style.css
+   Modern, lightweight styles for the Create Post page
+   Place this file in your public CSS folder (e.g. /public/css/post-style.css)
+*/
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --muted:#7b8794;
+  --accent:#4f46e5; /* indigo */
+  --accent-2:#06b6d4; /* teal */
+  --shadow: 0 6px 18px rgba(17,24,39,0.06);
+  --radius:12px;
+  --max-width:1100px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:32px 16px;
+  display:flex;
+  justify-content:center;
+}
+
+.wrap{
+  width:100%;
+  max-width:var(--max-width);
+  display:grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap:24px;
+  align-items:start;
+}
+
+/* Left column: create post card */
+.wrapper{
+  background:linear-gradient(180deg, rgba(255,255,255,0.9), var(--card));
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+}
+
+.wrapper h3{
+  margin:0 0 12px 0;
+  font-size:18px;
+  letter-spacing:0.2px;
+}
+
+.wrapper form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.wrapper input[type="text"], .wrapper textarea{
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(15,23,42,0.06);
+  background: #fff;
+  font-size:14px;
+  outline:none;
+  transition:box-shadow .15s, border-color .15s;
+  resize: vertical;
+  min-height:120px;
+}
+
+.wrapper input[type="text"]:focus, .wrapper textarea:focus{
+  box-shadow:0 6px 18px rgba(79,70,229,0.08);
+  border-color: rgba(79,70,229,0.22);
+}
+
+.wrapper input[type="submit"]{
+  background:linear-gradient(90deg,var(--accent), var(--accent-2));
+  color:white;
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform .08s ease, box-shadow .12s ease;
+}
+
+.wrapper input[type="submit"]:active{transform:translateY(1px)}
+.wrapper input[type="submit"]:hover{box-shadow:0 8px 24px rgba(79,70,229,0.12)}
+
+/* Right column: posts list */
+.yourPost{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.yourPost h3{
+  margin:0 0 6px 0;
+  font-size:18px;
+}
+
+.post{
+  background:var(--card);
+  border-radius:12px;
+  padding:14px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(2,6,23,0.03);
+}
+
+.post .content{
+  margin:0;
+  font-size:15px;
+  line-height:1.45;
+  color: #0b1220;
+   white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.post small{
+  display:block;
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* small helper styles */
+.timeago{
+  font-weight:600;
+  color:var(--muted);
+}
+
+/* Responsive: stack columns on narrow screens */
+@media (max-width:880px){
+  .wrap{grid-template-columns:1fr;}
+  .wrapper{order:0}
+  .yourPost{order:1}
+}
+
+/* Accessibility focus outline for keyboard users */
+input[type="text"]:focus,
+textarea:focus,
+input[type="submit"]:focus{
+  outline:3px solid rgba(99,102,241,0.12);
+  outline-offset:3px;
+}
+
+/* Small print / empty state */
+.yourPost .empty{
+  text-align:center;
+  padding:18px 10px;
+  color:var(--muted);
+  font-size:14px;
+}

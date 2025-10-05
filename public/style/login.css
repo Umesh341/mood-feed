@@ -1,0 +1,118 @@
+:root{
+      --green: #28a745;
+      --green-dark: #218838;
+      --bg: #ffffff;
+      --card: #ffffff;
+      --muted: #000000;
+      --border: #e9ecef;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(18,50,20,0.06);
+      --max-width: 760px;
+  }
+
+  *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction: column;
+    padding:18px;
+    background: var(--bg);
+    color:#0b2a12;
+  }
+
+  .card{
+    width:100%;
+    max-width:460px;
+    background:var(--card);
+    padding:26px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(18,50,20,0.06);
+    border:1px solid var(--border);
+  }
+
+  h2{margin:0 0 18px 0;color:#0b2a12;font-size:1.25rem}
+
+  .field{
+    position:relative;
+    margin-bottom:14px;
+  }
+
+  input[type="text"],
+  input[type="password"]{
+    width:100%;
+    padding:12px 76px 12px 12px; /* space for text buttons on the right */
+    border:1px solid #e6e6e6;
+    border-radius:8px;
+    outline:none;
+    font-size:0.95rem;
+    transition:box-shadow .15s, border-color .15s;
+    background:#fff;
+  }
+
+  input:focus{border-color:var(--green); box-shadow:0 0 0 4px rgba(40,167,69,0.06)}
+
+  /* text-toggle inside input (Show/Hide) */
+  .text-toggle {
+    position:absolute;
+    top:50%;
+    right:8px;
+    transform:translateY(-50%);
+    height:34px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    border:0;
+    cursor:pointer;
+    padding:6px 10px;
+    border-radius:6px;
+    font-weight:400;
+    color:black;
+  }
+  .text-toggle:focus{outline:2px solid rgba(40,167,69,0.12)}
+
+  /* Button row (Login + Add) */
+  .button-row{
+    display:flex;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .btn{
+    flex:1;
+    padding:12px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:0.95rem;
+    cursor:pointer;
+    border:0;
+  }
+
+  .btn-login{
+    background:var(--green);
+    color:#fff;
+  }
+  .btn-login:hover{background:var(--green-dark)}
+
+  .btn-add{
+    background:transparent;
+    border:2px solid var(--green);
+    color:var(--green);
+  }
+  .btn-add:hover{
+    background: rgba(40,167,69,0.06);
+  }
+
+  .meta{font-size:0.9rem;color:#444;margin-top:12px;text-align:center}
+  a{color:var(--green);text-decoration:none;font-weight:500}
+
+  /* Responsive: stack buttons on small screens and reduce paddings */
+  @media (max-width:440px){
+    .card{padding:18px; max-width:420px;}
+    input[type="text"],input[type="password"]{padding-right:76px;}
+    .button-row{flex-direction:column;}
+  }

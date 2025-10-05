@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <link rel="stylesheet" href="style/register.css">
+</head>
+<body>
+  <%- include('partials/nav', {user: token}) %>
+
+  <div class="wrap">
+    <div class="card" role="region" aria-label="Register">
+      <div class="aside" aria-hidden="true">
+        <div class="logo">Mood Feed</div>
+        <div class="lead">
+          Create your account and get started. Keep your password safe — you can preview it while typing.
+        </div>
+      </div>
+
+      <div class="form-col">
+        <h2>Create account</h2>
+
+        <form action="/register" method="POST" autocomplete="on" novalidate>
+          <div class="grid">
+            <div>
+              <label for="username">Username</label>
+              <div class="field">
+                <input id="username" name="username" type="text" placeholder="Username" required />
+              </div>
+            </div>
+
+            <div>
+              <label for="name">Name</label>
+              <div class="field">
+                <input id="name" name="name" type="text" placeholder="Full name" required />
+              </div>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+              <label for="email">Email</label>
+              <div class="field">
+                <input id="email" name="email" type="email" placeholder="you@example.com" required inputmode="email" />
+              </div>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+              <label for="password">Password</label>
+              <div class="field">
+                <input id="password" name="password" type="password" placeholder="Create a password" required aria-describedby="pwNote" />
+                <button id="togglePassword" type="button" class="text-toggle" aria-pressed="false" aria-label="Show password">Show</button>
+              </div>
+              <div id="pwNote" style="margin-top:8px; font-size:0.85rem; color:var(--muted)">
+                Use 8+ characters for a strong password.
+              </div>
+            </div>
+          </div>
+
+          <div class="actions" role="group" aria-label="Form actions">
+            <button class="btn btn-primary" type="submit">Register</button>
+            
+          </div>
+        </form>
+
+        <div class="foot">
+          Already have an account? <a href="/login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const pwd = document.getElementById('password');
+      const toggle = document.getElementById('togglePassword');
+      const addBtn = document.getElementById('addBtn');
+
+      // initialize
+      toggle.textContent = 'Show';
+      toggle.setAttribute('aria-pressed', 'false');
+      toggle.setAttribute('aria-label', 'Show password');
+
+      let tempPreview = false;
+
+      // Persistent toggle
+      toggle.addEventListener('click', () => {
+        if (pwd.type === 'password') {
+          pwd.type = 'text';
+          toggle.textContent = 'Hide';
+          toggle.setAttribute('aria-pressed', 'true');
+          toggle.setAttribute('aria-label', 'Hide password');
+        } else {
+          pwd.type = 'password';
+          toggle.textContent = 'Show';
+          toggle.setAttribute('aria-pressed', 'false');
+          toggle.setAttribute('aria-label', 'Show password');
+        }
+        toggle.focus();
+      });
+
+      // Temporary press-and-hold preview (desktop & touch)
+      const showTemp = (e) => {
+        if (pwd.type === 'text') return;
+        tempPreview = true;
+        pwd.type = 'text';
+        toggle.textContent = 'Hide';
+        toggle.setAttribute('aria-pressed','true');
+        e && e.preventDefault();
+      };
+      const hideTemp = () => {
+        if (!tempPreview) return;
+        tempPreview = false;
+        pwd.type = 'password';
+        toggle.textContent = 'Show';
+        toggle.setAttribute('aria-pressed','false');
+      };
+
+      toggle.addEventListener('mousedown', showTemp);
+      window.addEventListener('mouseup', hideTemp);
+      toggle.addEventListener('touchstart', showTemp, {passive:false});
+      window.addEventListener('touchend', hideTemp);
+
+      // keyboard toggle
+      toggle.addEventListener('keydown', (ev) => {
+        if (ev.key === ' ' || ev.key === 'Enter') {
+          ev.preventDefault();
+          toggle.click();
+        }
+      });
+
+      // Add button behavior - default: redirect to register (or you can modify)
+      addBtn.addEventListener('click', () => {
+        // Example: open a modal or navigate to another route.
+        // Currently, we redirect to /register (can be changed).
+        window.location.href = '/register';
+      });
+
+      // prevent Enter on toggle from submitting the form
+      toggle.addEventListener('keypress', (ev) => {
+        if (ev.key === 'Enter') ev.preventDefault();
+      });
+    })();
+  </script>
+</body>
+</html>

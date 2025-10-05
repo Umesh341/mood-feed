@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <link rel="stylesheet" href="style/index.css">
+  <script src="https://unpkg.com/timeago.js@4.0.2/dist/timeago.min.js"></script>
+</head>
+
+<body>
+    <%- include('partials/nav', {user: token}) %>
+
+        <div class="wrap">
+
+
+            <div class="Posts">
+
+ <% if( !token ) {%>
+               <a href="/login" class="post"  style="color: rgb(0, 0, 0); padding: 20px; margin-bottom: 50px; text-decoration: none;" > login to write the status</a>
+                <% } %>
+       
+                <% if(!posts.length) { %>
+                    <div class="post">
+                        <p class="content"> No posts yet. </p>
+
+
+                    </div>
+                    <% }else{ posts.reverse().forEach(post=> { %>
+                        <div class="post">
+                             <h3><%= post.user.username %>   </h3>
+
+                            <p class="content">
+                                <%= post.content %>
+                            </p>
+                            <small><span style="color: black;" class="timeago"
+                                    datetime="<%= post.date %>"></span></small>
+
+                        </div>
+                        <% } )}%>
+
+            </div>
+        </div>
+
+        <script>
+  // Initialize live updating
+  timeago.render(document.querySelectorAll('.timeago'));
+</script>
+</body>
+
+</html>

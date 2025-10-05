@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Login — Show / Hide Password + Add Button</title>
+<link rel="stylesheet" href="style/login.css">
+</head>
+<body>
+  <%- include('partials/nav', {user: token}) %>
+
+  <div class="card" role="region" aria-label="Login form">
+    <h2>Login</h2>
+
+    <form id="loginForm" action="/login" method="POST" autocomplete="on">
+      <div class="field">
+        <label for="email" class="sr-only" style="display:none">Email</label>
+        <input id="email" name="email" type="text" placeholder="Email" required inputmode="email" />
+      </div>
+
+      <div class="field">
+        <label for="password" class="sr-only" style="display:none">Password</label>
+        <input id="password" name="password" type="password" placeholder="Password" required aria-describedby="pw-note" />
+        <!-- Text show/hide button inside input -->
+        <button id="togglePassword" type="button" class="text-toggle"
+                aria-pressed="false" aria-label="Show password" title="Show password">Show</button>
+      </div>
+
+      <div class="button-row" role="group" aria-label="Form actions">
+        <button class="btn btn-login" type="submit">Login</button>
+        
+      </div>
+    </form>
+
+    <div class="meta">
+      Don't have an account? <a href="/register">Sign up</a>
+    </div>
+  </div>
+
+<script>
+  (function(){
+    const pwd = document.getElementById('password');
+    const toggle = document.getElementById('togglePassword');
+    const addBtn = document.getElementById('addBtn');
+
+    // Start state
+    toggle.textContent = 'Show';
+    toggle.setAttribute('aria-pressed','false');
+    toggle.setAttribute('aria-label','Show password');
+
+    // Temporary preview flag
+    let tempPreview = false;
+
+    // Click toggles persistent visibility
+    toggle.addEventListener('click', () => {
+      const currentlyHidden = pwd.type === 'password';
+      if (currentlyHidden) {
+        pwd.type = 'text';
+        toggle.textContent = 'Hide';
+        toggle.setAttribute('aria-pressed', 'true');
+        toggle.setAttribute('aria-label', 'Hide password');
+      } else {
+        pwd.type = 'password';
+        toggle.textContent = 'Show';
+        toggle.setAttribute('aria-pressed', 'false');
+        toggle.setAttribute('aria-label', 'Show password');
+      }
+      // keep focus on toggle for keyboard users
+      toggle.focus();
+    });
+
+    // Press-and-hold (temporary preview) — helpful on touch devices
+    const showTemp = (e) => {
+      // don't override if already toggled to visible
+      if (pwd.type === 'text') return;
+      tempPreview = true;
+      pwd.type = 'text';
+      toggle.textContent = 'Hide';
+      toggle.setAttribute('aria-pressed','true');
+      e && e.preventDefault();
+    };
+    const hideTemp = () => {
+      if (!tempPreview) return;
+      tempPreview = false;
+      pwd.type = 'password';
+      toggle.textContent = 'Show';
+      toggle.setAttribute('aria-pressed','false');
+    };
+
+    // Desktop mouse and touch events for temporary preview
+    toggle.addEventListener('mousedown', showTemp);
+    window.addEventListener('mouseup', hideTemp);
+    toggle.addEventListener('touchstart', showTemp, {passive:false});
+    window.addEventListener('touchend', hideTemp);
+
+    // keyboard toggle (space or enter)
+    toggle.addEventListener('keydown', (ev) => {
+      if (ev.key === ' ' || ev.key === 'Enter') {
+        ev.preventDefault();
+        toggle.click();
+      }
+    });
+
+    // Example action for Add button — customize as needed.
+    addBtn.addEventListener('click', () => {
+      // default behavior: open register page in this example
+      // You can replace this with any "add" logic (add item, add account, open modal, etc.)
+      window.location.href = '/register';
+    });
+
+    // Prevent accidental form submit when pressing Enter on toggle (if focused)
+    toggle.addEventListener('keypress', (ev) => {
+      if (ev.key === 'Enter') ev.preventDefault();
+    });
+  })();
+</script>
+</body>
+</html>

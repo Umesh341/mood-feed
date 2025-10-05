@@ -1,0 +1,304 @@
+<style>
+    :root {
+        --bg-grad-1: #0f172a;
+        /* deep */
+        --bg-grad-2: #0b2545;
+        /* accent */
+        --accent: #4fd1c5;
+        /* mint */
+        --muted: rgba(255, 255, 255, 0.7);
+        --glass: rgba(255, 255, 255, 0.06);
+        --glass-strong: rgba(255, 255, 255, 0.08);
+        --radius: 14px;
+        --transition: 260ms cubic-bezier(.2, .9, .3, 1);
+    }
+
+    * {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+        margin: 0;
+
+    }
+
+    /* base reset for nav elements */
+    .nav-wrapper {
+        position: fixed;
+        height: 5rem;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        /* Full width */
+        z-index: 60;
+        margin: 0;
+        /* No margin */
+        border-radius: 0;
+        /* No rounded corners */
+        backdrop-filter: blur(8px) saturate(120%);
+        -webkit-backdrop-filter: blur(8px) saturate(120%);
+        background: linear-gradient(136deg, #326337e6 10%, rgb(9 38 54 / 62%) 60%);
+        box-shadow: 0 8px 30px rgba(4, 8, 20, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        padding: 10px 16px;
+        transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+
+
+    /* brand */
+    .brand {
+        color: white;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.05rem;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, rgba(114, 188, 129, 0.03), transparent);
+        transition: transform var(--transition), background var(--transition);
+    }
+
+    .brand:hover {
+        transform: translateY(-2px);
+    }
+
+    /* hide the actual checkbox */
+    .nav-toggle {
+        position: absolute;
+        left: -9999px;
+    }
+
+    /* hamburger label */
+    .nav-toggle-label {
+        display: none;
+        /* show on mobile via media query */
+        cursor: pointer;
+        user-select: none;
+        padding: 10px;
+        border-radius: 10px;
+        transition: background var(--transition);
+    }
+
+    .nav-toggle-label:hover {
+        background: var(--glass-strong);
+    }
+
+    .hamburger {
+        width: 22px;
+        height: 2px;
+        display: block;
+        background: linear-gradient(90deg, var(--accent), #9be7df);
+        position: relative;
+        border-radius: 2px;
+        transition: transform var(--transition);
+    }
+
+    .hamburger::before,
+    .hamburger::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 22px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--accent), #9be7df);
+        transition: transform var(--transition), top var(--transition), opacity var(--transition);
+    }
+
+    .hamburger::before {
+        top: -7px;
+    }
+
+    .hamburger::after {
+        top: 7px;
+    }
+
+    /* desktop nav */
+    .nav {
+        margin-left: auto;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        margin-right: 30px;
+    }
+
+    .nav-link {
+        color: var(--muted);
+        text-decoration: none;
+        padding: 8px 12px;
+        font-size: 0.96rem;
+        border-radius: 8px;
+        transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .nav-link:hover {
+        color: rgb(114, 240, 139);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* callout for primary link (optional) */
+    .nav-link.primary {
+        background: linear-gradient(90deg, rgba(79, 209, 197, 0.12), rgba(79, 209, 197, 0.05));
+        color: white;
+        box-shadow: 0 6px 18px rgba(79, 209, 197, 0.06);
+    }
+
+    /* active link (simple underline) */
+    .nav-link.active {
+        position: relative;
+        color: rgb(135, 233, 117);
+    }
+
+    .nav-link.active::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -8px;
+        width: 36px;
+        height: 3px;
+        border-radius: 8px;
+        background: linear-gradient(90deg, var(--accent), #9be7df);
+        opacity: 0.95;
+    }
+
+    /* responsive behavior */
+    @media (max-width: 860px) {
+        .nav-wrapper {
+            margin: 12px;
+            padding: 8px 12px;
+        }
+
+        /* show hamburger */
+        .nav-toggle-label {
+            display: block;
+            margin-left: auto;
+        }
+
+        /* nav becomes a slide-in panel */
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            transform: translateX(8px);
+            width: clamp(220px, 42%, 340px);
+            height: calc(100vh - 40px);
+            background: linear-gradient(180deg, rgba(11, 37, 69, 0.95), rgba(11, 37, 69, 0.92));
+            border-radius: 16px;
+            box-shadow: 0 30px 80px rgba(2, 6, 24, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 18px;
+            transition: transform var(--transition), opacity var(--transition);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .nav-links {
+            flex-direction: column;
+            gap: 14px;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            font-size: 1.5rem;
+            background: transparent;
+            text-align: center;
+        }
+
+        /* when checkbox is checked -> show panel */
+        .nav-toggle:checked~.nav-toggle-label .hamburger {
+            transform: rotate(45deg);
+            background: transparent;
+        }
+
+        .nav-toggle:checked~.nav-toggle-label .hamburger::before {
+            transform: rotate(90deg);
+            top: 0;
+        }
+
+        .nav-toggle:checked~.nav-toggle-label .hamburger::after {
+            opacity: 0;
+        }
+
+        .nav-toggle:checked~.nav {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+
+    /* small screens cleanup */
+    @media (max-width: 420px) {
+        .nav-link {
+            font-size: 1rem;
+            padding: 11px 14px;
+        }
+
+        .brand {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+
+<header class="nav-wrapper">
+    <a class="brand" href="/">Mood Feed</a>
+
+    <!-- checkbox toggle (accessible) -->
+    <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation" />
+    <label class="nav-toggle-label" for="nav-toggle" aria-hidden="true">
+        <span class="hamburger"></span>
+    </label>
+
+    <nav class="nav" id="main-nav" aria-label="Main menu">
+        <ul class="nav-links">
+            <li><a href="/" class="nav-link">Home</a></li>
+
+            <% if(user) {%>
+                <li><a href="/profile" class="nav-link">Profile</a></li>
+                <% } %>
+
+                    <% if(user) {%>
+                        <li><a href="/logout" class="nav-link">Logout</a></li>
+                        <% } else{%>
+                            <li><a href="/register" class="nav-link">Sign Up</a></li>
+                            <li><a href="/login" class="nav-link">Login</a></li>
+                            <% } %>
+        </ul>
+    </nav>
+</header>
+
+<!-- small script to improve aria state and close menu when a link is clicked -->
+<script>
+    (function () {
+        const toggle = document.getElementById('nav-toggle');
+        const nav = document.getElementById('main-nav');
+
+        // keep an aria-expanded state in sync
+        toggle.addEventListener('change', () => {
+            toggle.setAttribute('aria-expanded', toggle.checked ? 'true' : 'false');
+        });
+
+        // close menu after clicking a link (mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (toggle.checked) {
+                    toggle.checked = false;
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    })();
+</script>

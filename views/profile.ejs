@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style/profile.css">
+</head>
+
+  <script src="https://unpkg.com/timeago.js@4.0.2/dist/timeago.min.js"></script>
+<body>
+    <%- include('partials/nav', {user:user}) %>
+
+        <div class="wrap">
+
+            <div class="wrapper">
+                <h3> Create Post</h3>
+                <form action="/create-post" method="POST">
+                     <textarea name="post" id="post" placeholder="What's on your mind?" required></textarea>
+
+                    <input type="submit" value="Create Post">
+                </form>
+            </div>
+
+            <div class="yourPost">
+                <h3>Your Posts</h3>
+                <% if(!posts.length) { %>
+                     <div class="post">
+                        <p class="content"> No posts yet. </p>
+                     
+
+                    </div>
+                    <% }else{ 
+                       posts.reverse().forEach(post => { %>
+                    <div class="post">
+                        <p class="content"><%= post.content %>      </p>
+                            <small><span  style="color: black;" class="timeago" datetime="<%= post.date %>"></span></small>
+                            <form action="/delete-post" method="post"   onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                <input type="submit" value="delete">
+                                <input type="hidden" name="id" value="<%= post._id%>">
+                            </form>
+                  
+
+                    </div>
+                    <% } )}%>
+
+            </div>
+
+        </div>
+
+
+<script>
+  // Initialize live updating
+  timeago.render(document.querySelectorAll('.timeago'));
+</script>
+</body>
+
+</html>
