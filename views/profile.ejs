@@ -35,7 +35,7 @@
                        posts.reverse().forEach(post => { %>
                     <div class="post">
                         <p class="content"><%= post.content %>      </p>
-                            <small><span  style="color: black;" class="timeago" datetime="<%= post.date %>"></span></small>
+                            <small><span  style="color: rgb(110, 108, 108);" class="timeago" datetime="<%= post.date %>"></span></small>
                             <form action="/delete-post" method="post"   onsubmit="return confirm('Are you sure you want to delete this post?');">
                                 <input type="submit" value="delete">
                                 <input type="hidden" name="id" value="<%= post._id%>">

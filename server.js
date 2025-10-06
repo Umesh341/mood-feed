@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
 const path = require('path');
- require('dotenv').config();
+require('dotenv').config();
 
 
 const bcrypt = require('bcrypt');
@@ -24,27 +24,27 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.get('/',  async (req, res) => {
-    
-    
+app.get('/', async (req, res) => {
+
+
     const token = req.cookies.token;
-    if (!token) { 
-         const posts = await Post.find().populate('user', 'username');
-         res.render('index', { token: req.cookies.token , posts});
-     }
-    
+    if (!token) {
+        const posts = await Post.find().populate('user', 'username');
+        res.render('index', { token: req.cookies.token, posts });
+    }
+
     else {
         jwt.verify(token, 'secret', async (err, decoded) => {
-            if (err) { 
+            if (err) {
                 const posts = await Post.find().populate('user', 'username');
-         res.render('index', { token: req.cookies.token , posts}); 
-        }
-            req.user = decoded; 
+                res.render('index', { token: req.cookies.token, posts });
+            }
+            req.user = decoded;
             const post = await Post.find().populate('user', 'username');
-        //    console.log(post);
-            const posts = post.filter(p => p.user._id.toString() !== decoded.user_id );
+            //    console.log(post);
+            const posts = post.filter(p => p.user._id.toString() !== decoded.user_id);
             // console.log(posts);
-            res.render('index', { token: req.cookies.token , posts});
+            res.render('index', { token: req.cookies.token, posts });
         });
     }
 });
@@ -131,68 +131,103 @@ app.get('/profile', isAuthenticated, async (res, req) => {
 
     const user = await User.findOne({ email: res.user.email });
     // console.log("a  " + user);
-    
-    const posts = await Post.find({user : user._id})
+
+    const posts = await Post.find({ user: user._id })
     // console.log(posts);
-    
+
     req.render('profile', { user, posts })
 })
 
 
-app.post('/create-post',isAuthenticated, async (res, req) => {
- try{
-      const { post} = res.body;
-      const user = await User.findOne({ email: res.user.email });
-   
-    
-       let  content = (post).replace(/\r\n/g, '\n');
-            content = content.replace(/^[ \t]+/, '');
+app.post('/create-post', isAuthenticated, async (res, req) => {
+    try {
+        const { post } = res.body;
+        const user = await User.findOne({ email: res.user.email });
 
-    const posts = await Post.create({
-        content: content,
-        user: user._id
-    })
-   
-    // Update the user document to include the new post
-    // console.log(posts);
-    // console.log(user);
-    user.posts.push(posts._id);
-    await user.save();
-    req.redirect('/profile');
-  
-}
-catch(e){
-    console.log(e);
-}
+
+        let content = (post).replace(/\r\n/g, '\n');
+        content = content.replace(/^[ \t]+/, '');
+
+        const posts = await Post.create({
+            content: content,
+            user: user._id
+        })
+
+        // Update the user document to include the new post
+        // console.log(posts);
+        // console.log(user);
+        user.posts.push(posts._id);
+        await user.save();
+        req.redirect('/profile');
+
+    }
+    catch (e) {
+        console.log(e);
+    }
 
 })
 
 app.post('/delete-post', isAuthenticated, async (res, req) => {
-      const postid = res.body.id;
+    const postid = res.body.id;
     //   console.log(postid);
-   try{
+    try {
 
-       const deleted = await Post.findByIdAndDelete(postid);
-       if(deleted){
-         const user = await User.findOne({ email: res.user.email });
-    const posts = await Post.find({user : user._id})
- req.render('profile', { user, posts })
-       }
-       
-   }
-   catch(e){
-    console.log(e.message);
-    
-   }
+        const deleted = await Post.findByIdAndDelete(postid);
+        if (deleted) {
+            const user = await User.findOne({ email: res.user.email });
+            const posts = await Post.find({ user: user._id })
+            req.render('profile', { user, posts })
+        }
 
-      
-    
+    }
+    catch (e) {
+        console.log(e.message);
+
+    }
+
+
+
 })
+
+
+
+app.post('/api/like', isAuthenticated, async (req, res) => {
+
+    try {
+
+        console.log(req.body);
+        const u_id = req.user.user_id;
+        const post_id = req.body.post_id;
+
+ const post = await Post.findById(post_id);
+  if (!post) return res.status(404).json({ error: 'Post not found' });
+
+  if (post.likes.includes(u_id)) {  
+    post.likes = post.likes.filter(id => id.toString() !== u_id.toString());
+  } else { 
+    post.likes.push(u_id); 
+  }
+
+  await post.save();
+  res.redirect('/');
+
+// Save and update post
+
+    
+  
+
+}catch (e) {
+    console.log(e);
+
+}
+});
 
 function isAuthenticated(req, res, next) {
 
     const token = req.cookies.token;
-    if (!token) { res.redirect('login') }
+    if (!token) {
+        res.redirect('/login');
+    }
 
     else {
         jwt.verify(token, 'secret', (err, decoded) => {
@@ -206,7 +241,6 @@ function isAuthenticated(req, res, next) {
 };
 
 
-// Connect to MongoDB with error handling
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home</title>
     <link rel="stylesheet" href="style/index.css">
-  <script src="https://unpkg.com/timeago.js@4.0.2/dist/timeago.min.js"></script>
+    <script src="https://unpkg.com/timeago.js@4.0.2/dist/timeago.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -17,36 +19,91 @@
 
             <div class="Posts">
 
- <% if( !token ) {%>
-               <a href="/login" class="post"  style="color: rgb(0, 0, 0); padding: 20px; margin-bottom: 50px; text-decoration: none;" > login to write the status</a>
-                <% } %>
-       
-                <% if(!posts.length) { %>
-                    <div class="post">
-                        <p class="content"> No posts yet. </p>
+                <% if( !token ) {%>
+                    <a href="/login" class="post"
+                        style="color: rgb(0, 0, 0); padding: 20px; margin-bottom: 50px; text-decoration: none;"> login
+                        to write the status</a>
+                    <% } %>
+
+                        <% if(!posts.length) { %>
+                            <div class="post">
+                                <p class="content"> No posts yet. </p>
 
 
-                    </div>
-                    <% }else{ posts.reverse().forEach(post=> { %>
-                        <div class="post">
-                             <h3><%= post.user.username %>   </h3>
+                            </div>
+                            <% }else{ posts.reverse().forEach(post=> { %>
+                                <div class="post">
+                                    <h3>
+                                        <%= post.user.username %>
+                                    </h3>
 
-                            <p class="content">
-                                <%= post.content %>
-                            </p>
-                            <small><span style="color: black;" class="timeago"
-                                    datetime="<%= post.date %>"></span></small>
+                                    <p class="content">
+                                        <%= post.content %>
+                                            <%= post._id %>
+                                    </p>
+                                    <small>
+                                        <span style="color:rgb(110, 108, 108);" class="timeago"
+                                            datetime="<%= post.date %>"></span></small> <br>
+                                    <!-- <form action="/api/like" method="post">
+                                        <input type="submit" value="" id="actsubmit" style="display:none;">
+                                        <input type="hidden" name="post_id" value="<%= post._id %>">
+                                        <%= post._id %> -->
+                                    <i class="fa-solid fa-thumbs-up like-btn" data-post-id="<%= post._id %>"
+                                        style="cursor: pointer;"></i>
+                                        <% const count = post.likes.length; %>
+<span class="like-count"><%= count %></span>
+                               
+                                        <!-- </input>
+                                           
+                                    </form> -->
 
-                        </div>
-                        <% } )}%>
+                                </div>
+                                <% } )}%>
 
             </div>
         </div>
 
         <script>
-  // Initialize live updating
-  timeago.render(document.querySelectorAll('.timeago'));
-</script>
+            // Initialize live updating
+            timeago.render(document.querySelectorAll('.timeago'));
+
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const postId = btn.dataset.postId;
+                    console.log('Clicked post:', postId);
+
+                    const response = await fetch('/api/like', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ post_id: postId })
+                    });
+                    console.log(response);
+               
+      
+
+                    // Optionally update the like count in UI
+                });
+            });
+
+
+            document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const likeCountSpan = btn.nextElementSibling;
+    let count = parseInt(likeCountSpan.textContent);
+
+    if (btn.classList.contains('liked')) {
+      btn.classList.remove('liked');
+      count--; // unlike
+    } else {
+      btn.classList.add('liked');
+      count++; // like
+    }
+
+    likeCountSpan.textContent = count;
+  });
+});
+
+        </script>
 </body>
 
 </html>
