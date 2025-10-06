@@ -41,6 +41,8 @@ This application is my first project built while learning backend development, a
 2. **Install dependencies:**
    ```bash
    npm install
+   ```
+   ```bash
    npm i express mongoose bcrypt jsonwebtoken cookie-parser  ejs dotenv timeago.js nodemon
    ```
 
@@ -56,7 +58,10 @@ This application is my first project built while learning backend development, a
    ```bash
    npm start
    ```
-
+   or
+  ```bash
+   node server.js
+   ```
 5. **View in browser:**
    - Visit `http://localhost:3000`
 
