@@ -28,6 +28,7 @@ app.get('/', async (req, res) => {
 
 
     const token = req.cookies.token;
+        
     if (!token) {
         const posts = await Post.find().populate('user', 'username');
         res.render('index', { token: req.cookies.token, posts });
@@ -195,7 +196,7 @@ app.post('/api/like', isAuthenticated, async (req, res) => {
 
     try {
 
-        console.log(req.body);
+   
         const u_id = req.user.user_id;
         const post_id = req.body.post_id;
 

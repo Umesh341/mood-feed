@@ -48,11 +48,11 @@
                                         <input type="submit" value="" id="actsubmit" style="display:none;">
                                         <input type="hidden" name="post_id" value="<%= post._id %>">
                                         <%= post._id %> -->
-                                    <!-- <i class="fa-solid fa-thumbs-up like-btn" data-post-id="<%= post._id %>"
-                                        style="cursor: pointer;"></i>
+                                        <% if( post.user.toString() == token._id ) %>
+                             <i class="fa-solid fa-thumbs-up like-btn" data-post-id="<%= post._id%>" style="cursor: pointer;"></i>
                                         <% const count = post.likes.length; %>
 <span class="like-count"><%= count %></span>
-                                -->
+                             
                                         <!-- </input>
                                            
                                     </form> -->
@@ -70,38 +70,18 @@
             document.querySelectorAll('.like-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const postId = btn.dataset.postId;
-                    console.log('Clicked post:', postId);
+                    // console.log('Clicked post:', postId);
 
                     const response = await fetch('/api/like', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ post_id: postId })
                     });
-                    console.log(response);
-               
-      
-
-                    // Optionally update the like count in UI
+                     window.location.reload();
                 });
             });
 
 
-            document.querySelectorAll('.like-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const likeCountSpan = btn.nextElementSibling;
-    let count = parseInt(likeCountSpan.textContent);
-
-    if (btn.classList.contains('liked')) {
-      btn.classList.remove('liked');
-      count--; // unlike
-    } else {
-      btn.classList.add('liked');
-      count++; // like
-    }
-
-    likeCountSpan.textContent = count;
-  });
-});
 
         </script>
 </body>
