@@ -41,6 +41,7 @@ This application is my first project built while learning backend development, a
 2. **Install dependencies:**
    ```bash
    npm install
+   npm i express mongoose bcrypt jsonwebtoken cookie-parser  ejs dotenv timeago.js nodemon
    ```
 
 3. **Configure environment variables:**
