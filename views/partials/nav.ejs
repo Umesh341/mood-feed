@@ -16,7 +16,6 @@
     * {
         font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
         margin: 0;
-
     }
 
     /* base reset for nav elements */
@@ -26,12 +25,9 @@
         top: 0;
         left: 0;
         width: 100vw;
-        /* Full width */
         z-index: 60;
         margin: 0;
-        /* No margin */
         border-radius: 0;
-        /* No rounded corners */
         backdrop-filter: blur(8px) saturate(120%);
         -webkit-backdrop-filter: blur(8px) saturate(120%);
         background: linear-gradient(136deg, #326337e6 10%, rgb(9 38 54 / 62%) 60%);
@@ -42,7 +38,6 @@
         padding: 10px 16px;
         transition: transform 300ms ease, box-shadow 300ms ease;
     }
-
 
     /* brand */
     .brand {
@@ -73,7 +68,6 @@
     /* hamburger label */
     .nav-toggle-label {
         display: none;
-        /* show on mobile via media query */
         cursor: pointer;
         user-select: none;
         padding: 10px;
@@ -168,11 +162,11 @@
         background: linear-gradient(90deg, var(--accent), #9be7df);
         opacity: 0.95;
     }
-
+ .close-btn { display: none; }
     /* responsive behavior */
     @media (max-width: 860px) {
         .nav-wrapper {
-            margin: 12px;
+            margin: 0px;
             padding: 8px 12px;
         }
 
@@ -217,7 +211,31 @@
             text-align: center;
         }
 
-        /* when checkbox is checked -> show panel */
+        /* close button (mobile) - initially hidden on larger screens, visible here */
+        .close-btn {
+            display: block;
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: transparent;
+            border: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            padding: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--muted);
+            transition: transform var(--transition), color var(--transition), background var(--transition);
+            z-index: 80;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            color: white;
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* when checkbox is checked -> animate hamburger and show panel */
         .nav-toggle:checked~.nav-toggle-label .hamburger {
             transform: rotate(45deg);
             background: transparent;
@@ -249,6 +267,12 @@
         .brand {
             font-size: 1rem;
         }
+
+        /* slightly increase close button touch area on very small screens */
+        .close-btn {
+            padding: 10px;
+            font-size: 1.8rem;
+        }
     }
 </style>
 
@@ -257,25 +281,28 @@
     <a class="brand" href="/">Mood Feed</a>
 
     <!-- checkbox toggle (accessible) -->
-    <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation" />
+    <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation" aria-expanded="false" />
     <label class="nav-toggle-label" for="nav-toggle" aria-hidden="true">
         <span class="hamburger"></span>
     </label>
 
     <nav class="nav" id="main-nav" aria-label="Main menu">
+        <!-- Close button for small screens (added). JS will uncheck checkbox to close. -->
+        <button class="close-btn" type="button" aria-label="Close menu">&times;</button>
+
         <ul class="nav-links">
             <li><a href="/" class="nav-link">Home</a></li>
 
             <% if(user) {%>
                 <li><a href="/profile" class="nav-link">Profile</a></li>
-                <% } %>
+            <% } %>
 
-                    <% if(user) {%>
-                        <li><a href="/logout" class="nav-link">Logout</a></li>
-                        <% } else{%>
-                            <li><a href="/register" class="nav-link">Sign Up</a></li>
-                            <li><a href="/login" class="nav-link">Login</a></li>
-                            <% } %>
+            <% if(user) {%>
+                <li><a href="/logout" class="nav-link">Logout</a></li>
+            <% } else{ %>
+                <li><a href="/register" class="nav-link">Sign Up</a></li>
+                <li><a href="/login" class="nav-link">Login</a></li>
+            <% } %>
         </ul>
     </nav>
 </header>
@@ -300,5 +327,19 @@
                 }
             });
         });
+
+        // hook up the new close (×) button
+        const closeBtn = document.querySelector('.close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                if (toggle.checked) {
+                    toggle.checked = false;
+                    toggle.setAttribute('aria-expanded', 'false');
+                    // return focus to the hamburger for accessibility
+                    const label = document.querySelector('.nav-toggle-label');
+                    if (label) label.focus();
+                }
+            });
+        }
     })();
 </script>
