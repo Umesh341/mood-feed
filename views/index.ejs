@@ -48,7 +48,7 @@
                                         <input type="submit" value="" id="actsubmit" style="display:none;">
                                         <input type="hidden" name="post_id" value="<%= post._id %>">
                                         <%= post._id %> -->
-                                        <% if( post.user.toString() == token._id ) %>
+                                        
                              <i class="fa-solid fa-thumbs-up like-btn" data-post-id="<%= post._id%>" style="cursor: pointer;"></i>
                                         <% const count = post.likes.length; %>
 <span class="like-count"><%= count %></span>
